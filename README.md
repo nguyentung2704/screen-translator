@@ -10,8 +10,8 @@ A lightweight, powerful Windows application that captures screen regions and tra
 - **Instant Capture**: Use a customizable hotkey (default: `Ctrl+Shift+D`) to select any area on your screen.
 - **AI-Powered Translation**: Leverages **Gemini 2.0 Flash** for high-context, natural translations.
 - **Multi-Language Support**:
-  - Japanese 🇯🇵 → Vietnamese 🇻🇳
-  - English 🇺🇸 → Vietnamese 🇻🇳
+  - Japanese → Vietnamese
+  - English → Vietnamese
 - **Persistent Settings**: Your API Key, Hotkeys, and Language preferences are automatically saved.
 - **Native Performance**: Uses Windows 10/11 built-in OCR for lightning-fast text recognition.
 - **Professional Tray UI**: Minimalist design that stays out of your way in the system tray.
