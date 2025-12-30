@@ -1,53 +1,70 @@
-# 🔍 Screen Translator (v1.0.3)
+# 🔍 Screen Translator(v1.0.3)
 
-A lightweight, powerful Windows application that captures screen regions and translates text instantly using **Windows Native OCR** and **Google Gemini AI**.
+**Screen Translator AI** là một ứng dụng Windows mạnh mẽ, tinh gọn, cho phép bạn chụp bất kỳ vùng nào trên màn hình và dịch thuật ngay lập tức. Ứng dụng kết hợp công nghệ **Windows Native OCR** siêu tốc và trí tuệ nhân tạo **Google Gemini AI** để mang lại kết quả dịch thuật tự nhiên, chính xác nhất.
 
-![App Preview](C:/Users/nguyentung/Desktop/apps/ScreenTranslator.UI/Resources/app_icon.png) 
-*(Note: Replace with a real screenshot in your repo)*
+---
 
-## 🚀 Key Features
+## ✨ Tính năng nổi bật
 
-- **Instant Capture**: Use a customizable hotkey (default: `Ctrl+Shift+D`) to select any area on your screen.
-- **AI-Powered Translation**: Leverages **Gemini 2.0 Flash** for high-context, natural translations.
-- **Multi-Language Support**:
-  - Japanese → Vietnamese
-  - English → Vietnamese
-- **Persistent Settings**: Your API Key, Hotkeys, and Language preferences are automatically saved.
-- **Native Performance**: Uses Windows 10/11 built-in OCR for lightning-fast text recognition.
-- **Professional Tray UI**: Minimalist design that stays out of your way in the system tray.
-- **Single Instance Protection**: Prevents multiple background processes for better efficiency.
+- ⚡ **Chụp ảnh tức thì**: Sử dụng phím tắt tùy chỉnh (Mặc định: `Ctrl + Shift + D`) để quét vùng cần dịch.
+- 🤖 **Trí tuệ nhân tạo Gemini**: Sử dụng model **Gemini 2.0 Flash** mới nhất từ Google giúp hiểu ngữ cảnh và dịch mượt mà.
+- 🎯 **Độ chính xác cao**: Tích hợp Windows Native OCR của Microsoft giúp nhận diện chữ viết cực nhanh và chính xác.
+- 🇻🇳 **Hỗ Trợ Ngôn Ngữ**:
+    - **Tiếng Nhật (JP) → Tiếng Việt (VI)** (Tối ưu cho Manga/Tài liệu kỹ thuật).
+    - **Tiếng Anh (EN) → Tiếng Việt (VI)**.
+- 🛠 **Tùy biến tối đa**:
+    - Thay đổi phím tắt linh hoạt (Ctrl, Shift, Alt + bất kỳ phím nào).
+    - Tự động lưu cài đặt: API Key, phím tắt, ngôn ngữ được ghi nhớ cho lần sau.
+- 🚀 **Bản Portable duy nhất**: Chỉ một file `.exe` duy nhất, không cần cài đặt, không file rác.
+- 📏 **Giao diện hiện đại**: Thiết kế Dark Mode thanh lịch, thu nhỏ gọn gàng dưới thanh Taskbar.
 
-## 🛠️ Setup & Installation
+---
 
-1. **Download**: Grab the latest `ScreenTranslator.UI.exe` from the `publish_capture` folder.
-2. **Requirements**: 
-   - Windows 10 or 11.
-   - .NET 6.0/7.0/8.0 Runtime (depending on build).
-3. **API Key**: 
-   - Right-click the Tray Icon -> **Settings** -> **Set API Key**.
-   - Get your free key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+## 🛠 Hướng dẫn thiết lập (Setup)
 
-## 📖 How to Use
+### 1. Tải và Chạy
+- Giải nén tệp `ScreenTranslator_v1.0.3_Portable.zip`.
+- Chạy trực tiếp file `ScreenTranslator.UI.exe`.
 
-1. **Launch** the app. Look for the search icon in your System Tray.
-2. **Configure**: Set your preferred Hotkey and Translation Provider (Standard or AI).
-3. **Capture**: Press your hotkey and drag the mouse over the text you want to translate.
-4. **View**: The result window will pop up near your selection with the translated text.
+### 2. Cấu hình API Key (Bắt buộc cho chế độ AI)
+- Chuột phải vào icon kính lúp ở thanh Taskbar (Tray Icon) -> **Settings** -> **Set API Key**.
+- Lấy khóa API miễn phí tại: [Google AI Studio](https://aistudio.google.com/app/apikey).
+- Dán mã vào ứng dụng và nhấn **Save**.
 
-## ⚙️ Development
+### 3. Cài đặt phím tắt
+- Chuột phải vào Tray Icon -> **Settings** -> **Set Hotkey**.
+- Chọn tổ hợp phím bạn muốn và lưu lại.
 
-This project is built with:
-- **WPF (.NET)**: For a modern Windows UI experience.
-- **CommunityToolkit.Mvvm**: Robust architecture.
-- **Hardcodet.NotifyIcon**: Advanced tray integration.
+---
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/screen-translator-ai.git
+## 📖 Cách sử dụng
 
-# Build
-dotnet build
-```
+1. **Khởi động**: Sau khi mở app, icon sẽ xuất hiện ở góc dưới bên phải màn hình.
+2. **Kích hoạt**: Nhấn tổ hợp phím tắt (VD: `Ctrl+Shift+D`). Màn hình sẽ mờ đi để bạn chọn vùng.
+3. **Quét**: Nhấp và kéo chuột qua vùng văn bản cần dịch.
+4. **Xem kết quả**: Một cửa sổ nhỏ sẽ hiện ra ngay bên cạnh với nội dung dịch thuật. Bạn có thể nhấn ra ngoài để đóng cửa số kết quả.
 
-## 📄 License
-MIT License - Feel free to use and contribute!
+---
+
+## 📂 Cấu trúc dự án (Dành cho nhà phát triển)
+
+Dự án được xây dựng trên nền tảng **.NET 7.0 (WPF)** với kiến trúc **MVVM**:
+- `ScreenTranslator.UI`: Giao diện chính và logic ViewModel.
+- `ScreenTranslator.Core`: Các interface và model dữ liệu dùng chung.
+- `ScreenTranslator.Infrastructure`: Xử lý OCR, gọi API Gemini và quản lý phím tắt Native.
+
+---
+
+## ❓ Xử lý sự cố (Troubleshooting)
+
+- **Lỗi không đăng ký được phím tắt**: Đảm bảo phím tắt bạn chọn không bị trùng với ứng dụng khác đang chạy.
+- **Lỗi AI không dịch được**: Kiểm tra lại API Key và đảm bảo bạn có kết nối Internet ổn định.
+- **App không hiện cửa sổ**: App chạy ngầm dưới dạng Tray Icon, hãy kiểm tra danh sách icon ở góc phải Taskbar.
+
+---
+
+## 📄 Bản quyền & Đóng góp
+Sản phẩm được phát hành dưới giấy phép **MIT**. Mọi đóng góp xin vui lòng tạo Pull Request hoặc Issue trên GitHub.
+
+---
+*Phát triển bởi Google DeepMind Team - Advanced Agentic Coding.*
