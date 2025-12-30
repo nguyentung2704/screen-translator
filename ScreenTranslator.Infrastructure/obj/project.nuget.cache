@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "HlMi03f4ZTGdZx00uBtvdjoLJJz27u1rAsv0DCXsVTjQScFo0R3THdf4wHdKp55/kPOaSVOtywyM1uzboRwQZQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\nguyentung\\Desktop\\apps\\ScreenTranslator.Infrastructure\\ScreenTranslator.Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.31\\microsoft.windows.sdk.net.ref.10.0.19041.31.nupkg.sha512"
+  ],
+  "logs": []
+}

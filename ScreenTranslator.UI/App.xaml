@@ -1,0 +1,42 @@
+﻿<Application x:Class="ScreenTranslator.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+             Startup="Application_Startup"
+             Exit="Application_Exit"
+             ShutdownMode="OnExplicitShutdown">
+    <Application.Resources>
+        <ContextMenu x:Key="TrayMenu">
+            <MenuItem Header="{Binding AppVersion}" IsEnabled="False" FontWeight="Bold"/>
+            <Separator />
+            <MenuItem Command="{Binding StartSelectionCommand}">
+                <MenuItem.Header>
+                    <TextBlock>
+                        <Run Text="Capture ("/><Run Text="{Binding HotkeyDisplay, Mode=OneWay}"/><Run Text=")"/>
+                    </TextBlock>
+                </MenuItem.Header>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Languages">
+                <MenuItem Header="Japanese -> Vietnamese" Command="{Binding SetLanguageCommand}" CommandParameter="ja-vi" IsCheckable="True" IsChecked="{Binding IsJaViSelected, Mode=OneWay}" />
+                <MenuItem Header="English -> Vietnamese" Command="{Binding SetLanguageCommand}" CommandParameter="en-vi" IsCheckable="True" IsChecked="{Binding IsEnViSelected, Mode=OneWay}" />
+            </MenuItem>
+            <MenuItem Header="Translator">
+                <MenuItem Header="Standard (Google)" Command="{Binding SetTranslatorCommand}" CommandParameter="Standard" IsCheckable="True" IsChecked="{Binding IsStandardTranslatorSelected, Mode=OneWay}" />
+                <MenuItem Header="AI (Gemini)" Command="{Binding SetTranslatorCommand}" CommandParameter="AI" IsCheckable="True" IsChecked="{Binding IsAiTranslatorSelected, Mode=OneWay}" />
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <MenuItem Header="Set Hotkey" Command="{Binding SetHotkeyCommand}" />
+                <MenuItem Header="Set API Key" Command="{Binding SetApiKeyCommand}" />
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+        </ContextMenu>
+        
+        <tb:TaskbarIcon x:Key="TrayIcon"
+                        ToolTipText="Screen Translator"
+                        ContextMenu="{StaticResource TrayMenu}">
+            <!-- Note: Icon property is usually required. In code behind we might set it to Application Icon -->
+        </tb:TaskbarIcon>
+    </Application.Resources>
+</Application>

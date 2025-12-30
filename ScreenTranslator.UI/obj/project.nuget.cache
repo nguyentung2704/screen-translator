@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "U47iNAFc/3UOfeUzOrp62tMh4Wd6IUUBZo+oI+qF9MGw3ywLaffstDj+VI+wnADdmKKRvCpNpCxzg//B7hAQxw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\nguyentung\\Desktop\\apps\\ScreenTranslator.UI\\ScreenTranslator.UI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\nguyentung\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\hardcodet.notifyicon.wpf\\1.1.0\\hardcodet.notifyicon.wpf.1.1.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.31\\microsoft.windows.sdk.net.ref.10.0.19041.31.nupkg.sha512"
+  ],
+  "logs": []
+}
