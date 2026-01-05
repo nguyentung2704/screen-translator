@@ -1,22 +1,15 @@
-# 🔍 Screen Translator(v1.0.3)
+# 🔍 Screen Translator AI (v1.0.14)
 
 **Screen Translator AI** là một ứng dụng Windows mạnh mẽ, tinh gọn, cho phép bạn chụp bất kỳ vùng nào trên màn hình và dịch thuật ngay lập tức. Ứng dụng kết hợp công nghệ **Windows Native OCR** siêu tốc và trí tuệ nhân tạo **Google Gemini AI** để mang lại kết quả dịch thuật tự nhiên, chính xác nhất.
 
----
-
 ## ✨ Tính năng nổi bật
 
-- ⚡ **Chụp ảnh tức thì**: Sử dụng phím tắt tùy chỉnh (Mặc định: `Ctrl + Shift + D`) để quét vùng cần dịch.
-- 🤖 **Trí tuệ nhân tạo Gemini**: Sử dụng model **Gemini 2.0 Flash** mới nhất từ Google giúp hiểu ngữ cảnh và dịch mượt mà.
-- 🎯 **Độ chính xác cao**: Tích hợp Windows Native OCR của Microsoft giúp nhận diện chữ viết cực nhanh và chính xác.
-- 🇻🇳 **Hỗ Trợ Ngôn Ngữ**:
-    - **Tiếng Nhật (JP) → Tiếng Việt (VI)** (Tối ưu cho Manga/Tài liệu kỹ thuật).
-    - **Tiếng Anh (EN) → Tiếng Việt (VI)**.
-- 🛠 **Tùy biến tối đa**:
-    - Thay đổi phím tắt linh hoạt (Ctrl, Shift, Alt + bất kỳ phím nào).
-    - Tự động lưu cài đặt: API Key, phím tắt, ngôn ngữ được ghi nhớ cho lần sau.
-- 🚀 **Bản Portable duy nhất**: Chỉ một file `.exe` duy nhất, không cần cài đặt, không file rác.
-- 📏 **Giao diện hiện đại**: Thiết kế Dark Mode thanh lịch, thu nhỏ gọn gàng dưới thanh Taskbar.
+-   **📸 Chụp & Dịch**: Chỉ cần kéo chuột chọn vùng, văn bản sẽ được dịch ngay lập tức.
+-   **⚡ Tốc độ cao**: Sử dụng phím tắt thông minh `Ctrl + Shift + D` (hoặc phím tắt tùy chỉnh).
+-   **🤖 AI Translation**: Dịch thuật ngữ cảnh cực hay nhờ Gemini 2.0 Flash.
+-   **🔄 Realtime Mode**: Tự động dịch lại khi nội dung màn hình thay đổi.
+-   **🎨 Giao diện hiện đại**: Dark Mode, Glassmorphism, tuỳ chỉnh độ mờ, cỡ chữ.
+-   **💾 Tự động lưu**: Ghi nhớ mọi cài đặt của bạn.
 
 ---
 

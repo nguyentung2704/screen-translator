@@ -23,6 +23,9 @@
         "originalTargetFrameworks": [
           "net7.0-windows"
         ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
         "frameworks": {
           "net7.0-windows7.0": {
             "targetAlias": "net7.0-windows",
@@ -85,6 +88,9 @@
         "originalTargetFrameworks": [
           "net7.0-windows10.0.19041.0"
         ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
         "frameworks": {
           "net7.0-windows10.0.19041": {
             "targetAlias": "net7.0-windows10.0.19041.0",

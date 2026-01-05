@@ -506,6 +506,9 @@
       "originalTargetFrameworks": [
         "net7.0-windows10.0.19041.0"
       ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "net7.0-windows10.0.19041": {
           "targetAlias": "net7.0-windows10.0.19041.0",

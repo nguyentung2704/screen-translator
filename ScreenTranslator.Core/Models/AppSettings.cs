@@ -10,5 +10,11 @@ namespace ScreenTranslator.Core.Models
         public string SourceLanguage { get; set; } = "ja";
         public string TargetLanguage { get; set; } = "vi";
         public string TranslatorProvider { get; set; } = "Standard";
+        
+        // UI Persistence
+        public double WindowOpacity { get; set; } = 0.9;
+        public double WindowFontSize { get; set; } = 14;
+        public bool ShowSourceText { get; set; } = false;
+        public bool IsRealtimeActive { get; set; } = false;
     }
 }

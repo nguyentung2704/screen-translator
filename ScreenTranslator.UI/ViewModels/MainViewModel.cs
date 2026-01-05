@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ScreenTranslator.UI.ViewModels
 {
@@ -28,6 +29,47 @@ namespace ScreenTranslator.UI.ViewModels
 
         [ObservableProperty]
         private bool _isProcessing;
+
+        [ObservableProperty] private double _windowOpacity = 0.9;
+        [ObservableProperty] private double _windowFontSize = 14;
+        [ObservableProperty] private bool _showSourceText;
+        [ObservableProperty] private string _sourceText = string.Empty;
+        
+        // Settings Panel property removed
+
+
+        // [ObservableProperty] removed to implement manually
+        private bool _isRealtimeActive;
+        public bool IsRealtimeActive
+        {
+            get => _isRealtimeActive;
+            set
+            {
+                if (SetProperty(ref _isRealtimeActive, value))
+                {
+                    if (_isRealtimeActive)
+                    {
+                        _realtimeTimer?.Start();
+                        UpdateStatusTemporary("Realtime: ON");
+                    }
+                    else
+                    {
+                        _realtimeTimer?.Stop();
+                        UpdateStatusTemporary("Realtime: OFF");
+                    }
+                    SaveSettings();
+                }
+            }
+        }
+
+        // Trigger Save on Property Changes
+        partial void OnWindowOpacityChanged(double value) => SaveSettings();
+        partial void OnWindowFontSizeChanged(double value) => SaveSettings();
+        partial void OnShowSourceTextChanged(bool value) => SaveSettings();
+
+        private DispatcherTimer _realtimeTimer;
+        private Rect _currentSelectionRect;
+        private string _lastOcrText = string.Empty;
 
         [ObservableProperty]
         private string _statusText = "Ready (Ctrl+Shift+D: Capture)";
@@ -53,9 +95,16 @@ namespace ScreenTranslator.UI.ViewModels
         public IRelayCommand<string> SetLanguageCommand { get; }
         public IRelayCommand<string> SetTranslatorCommand { get; }
         public IRelayCommand SetApiKeyCommand { get; }
+
         public IRelayCommand SetHotkeyCommand { get; }
 
-        public string AppVersion => "v1.0.3";
+        // ToggleRealtimeCommand removed in favor of property binding
+        // ToggleSettingsPanelCommand removed
+        public IRelayCommand<string> SetOpacityCommand { get; }
+        public IRelayCommand<string> SetFontSizeCommand { get; }
+        public IRelayCommand HideResultCommand { get; }
+
+        public string AppVersion => "v1.0.14";
 
         // Helper to show momentary status updates
         private async void UpdateStatusTemporary(string message, int durationMs = 3000)
@@ -105,8 +154,82 @@ namespace ScreenTranslator.UI.ViewModels
             SetApiKeyCommand = new RelayCommand(OpenApiKeySettings);
             SetHotkeyCommand = new RelayCommand(OpenHotkeySettings);
             ExitCommand = new RelayCommand(ExitApp);
+            // ToggleRealtimeCommand = new RelayCommand(ToggleRealtime); // Removed
+            HideResultCommand = new RelayCommand(HideResult);
+
+            SetOpacityCommand = new RelayCommand<string>(o => 
+            {
+                if (double.TryParse(o, out double val)) WindowOpacity = val;
+            });
+            SetFontSizeCommand = new RelayCommand<string>(s => 
+            {
+                if (double.TryParse(s, out double val)) WindowFontSize = val;
+            });
+
 
             LoadSettings();
+
+            _realtimeTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(2)
+            };
+            _realtimeTimer.Tick += RealtimeTick;
+        }
+
+        private void HideResult()
+        {
+            IsResultVisible = false;
+            IsRealtimeActive = false; // Stop realtime when closing
+            _realtimeTimer.Stop();
+        }
+
+
+
+        private async void RealtimeTick(object? sender, EventArgs e)
+        {
+            if (!IsResultVisible || !IsRealtimeActive)
+            {
+                _realtimeTimer.Stop();
+                IsRealtimeActive = false;
+                return;
+            }
+
+            if (_isProcessing) return; // Skip if busy
+
+            try
+            {
+                int padding = 10;
+                using var stream = await _captureService.CaptureRegionAsync(
+                    (int)_currentSelectionRect.X - padding,
+                    (int)_currentSelectionRect.Y - padding,
+                    (int)_currentSelectionRect.Width + (padding * 2),
+                    (int)_currentSelectionRect.Height + (padding * 2));
+
+                if (stream == null || stream.Length == 0) return;
+
+                var text = await _ocrService.RecognizeTextAsync(stream, SourceLanguage);
+
+                if (string.IsNullOrWhiteSpace(text)) return;
+                
+                // Compare with last result to avoid unnecessary API calls
+                if (text == _lastOcrText) return;
+
+                if (text == _lastOcrText) return;
+
+                _lastOcrText = text;
+                SourceText = text; // Update source text for UI
+                // StatusText = "Auto-translating..."; // Optional: feedback
+
+                var translated = await _translationService.TranslateAsync(text, SourceLanguage, TargetLanguage);
+                if (!string.IsNullOrWhiteSpace(translated))
+                {
+                    TranslatedText = translated;
+                }
+            }
+            catch 
+            {
+                // Silent failure in realtime loop
+            }
         }
         private void SetTranslator(string? type)
         {
@@ -257,6 +380,13 @@ namespace ScreenTranslator.UI.ViewModels
                 IsStandardTranslatorSelected = true;
                 IsAiTranslatorSelected = false;
             }
+
+            // Load UI Settings
+            WindowOpacity = settings.WindowOpacity;
+            WindowFontSize = settings.WindowFontSize;
+            WindowFontSize = settings.WindowFontSize;
+            ShowSourceText = settings.ShowSourceText;
+            IsRealtimeActive = settings.IsRealtimeActive;
         }
 
         private void SaveSettings()
@@ -268,7 +398,13 @@ namespace ScreenTranslator.UI.ViewModels
                 HotkeyKey = HotkeyKey,
                 SourceLanguage = SourceLanguage,
                 TargetLanguage = TargetLanguage,
-                TranslatorProvider = IsAiTranslatorSelected ? "AI" : "Standard"
+                TranslatorProvider = IsAiTranslatorSelected ? "AI" : "Standard",
+                
+                // Save UI Settings
+                WindowOpacity = WindowOpacity,
+                WindowFontSize = WindowFontSize,
+                ShowSourceText = ShowSourceText,
+                IsRealtimeActive = IsRealtimeActive
             };
             _settingsService.SaveSettings(settings);
         }
@@ -296,6 +432,12 @@ namespace ScreenTranslator.UI.ViewModels
                 UpdateStatusTemporary("Selection canceled");
                 return;
             }
+
+            // Reset Realtime state for new capture
+            IsRealtimeActive = false; 
+            _realtimeTimer.Stop();
+            _currentSelectionRect = selection;
+            _lastOcrText = string.Empty;
 
             IsProcessing = true;
             StatusText = "Processing Image...";
@@ -328,6 +470,13 @@ namespace ScreenTranslator.UI.ViewModels
                     return;
                 }
 
+                if (stream == null || stream.Length == 0)
+                {
+                    TranslatedText = "Failed to capture screen.";
+                    UpdateStatusTemporary("Error: Capture Failed");
+                    return;
+                }
+
                 var recognizedText = await _ocrService.RecognizeTextAsync(stream, SourceLanguage);
                 
                 if (string.IsNullOrWhiteSpace(recognizedText))
@@ -349,6 +498,8 @@ namespace ScreenTranslator.UI.ViewModels
                 {
                     TranslatedText = translated;
                     UpdateStatusTemporary("Translation Complete");
+                    _lastOcrText = recognizedText; 
+                    SourceText = recognizedText; // Update source text
                 }
             }
             catch (Exception ex)
