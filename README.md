@@ -16,7 +16,7 @@
 ## 🛠 Hướng dẫn thiết lập (Setup)
 
 ### 1. Tải và Chạy
-- Giải nén tệp `ScreenTranslator_v1.0.3_Portable.zip`.
+- Giải nén tệp `ScreenTranslator_v1.0.14_Portable.zip`.
 - Chạy trực tiếp file `ScreenTranslator.UI.exe`.
 
 ### 2. Cấu hình API Key (Bắt buộc cho chế độ AI)
