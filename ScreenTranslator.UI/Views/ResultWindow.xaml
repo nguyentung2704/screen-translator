@@ -73,6 +73,23 @@
 
                 <!-- Zone 2: Buttons. NO OVERLAP with Border above. -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
+                    
+                    <!-- Realtime Indicator -->
+                    <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,10,0" VerticalAlignment="Center"
+                            ToolTip="Realtime Translation Active"
+                            Visibility="{Binding IsRealtimeActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#00FF00"/> <!-- Green for Active -->
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsProcessing}" Value="True">
+                                        <Setter Property="Background" Value="#FFFF00"/> <!-- Yellow for Processing -->
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+
                     <Button Content="✕" Command="{Binding HideResultCommand}" ToolTip="Close"
                             Foreground="White" Background="Transparent" BorderThickness="0"
                             Padding="8,0" FontSize="16" Cursor="Hand" FontWeight="Bold"/>

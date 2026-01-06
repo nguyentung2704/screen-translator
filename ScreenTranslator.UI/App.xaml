@@ -50,7 +50,7 @@
                             <MenuItem Header="Extra Large (24)" Command="{Binding SetFontSizeCommand}" CommandParameter="24" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=24, Mode=OneWay}" StaysOpenOnClick="True"/>
                         </MenuItem>
                         <MenuItem Header="Show Source Text" IsCheckable="True" IsChecked="{Binding ShowSourceText, Mode=TwoWay}" StaysOpenOnClick="True"/>
-                        <MenuItem Header="Realtime Translation" IsCheckable="True" IsChecked="{Binding IsRealtimeActive, Mode=TwoWay}" StaysOpenOnClick="True"/>
+                        <!-- Realtime Translation removed from Tray Menu by user request -->
                     </MenuItem>
                 </MenuItem>
                 <Separator />

@@ -70,6 +70,7 @@ namespace ScreenTranslator.UI.ViewModels
         private DispatcherTimer _realtimeTimer;
         private Rect _currentSelectionRect;
         private string _lastOcrText = string.Empty;
+        private byte[] _lastCaptureBytes = Array.Empty<byte>();
 
         [ObservableProperty]
         private string _statusText = "Ready (Ctrl+Shift+D: Capture)";
@@ -104,7 +105,7 @@ namespace ScreenTranslator.UI.ViewModels
         public IRelayCommand<string> SetFontSizeCommand { get; }
         public IRelayCommand HideResultCommand { get; }
 
-        public string AppVersion => "v1.0.14";
+        public string AppVersion => "v1.2.2";
 
         // Helper to show momentary status updates
         private async void UpdateStatusTemporary(string message, int durationMs = 3000)
@@ -171,7 +172,7 @@ namespace ScreenTranslator.UI.ViewModels
 
             _realtimeTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(2)
+                Interval = TimeSpan.FromSeconds(0.5)
             };
             _realtimeTimer.Tick += RealtimeTick;
         }
@@ -191,6 +192,7 @@ namespace ScreenTranslator.UI.ViewModels
             {
                 _realtimeTimer.Stop();
                 IsRealtimeActive = false;
+                StatusText = "Realtime: Stopped";
                 return;
             }
 
@@ -198,6 +200,9 @@ namespace ScreenTranslator.UI.ViewModels
 
             try
             {
+                // Visual feedback that scan is happening (optional, maybe subtle)
+                // StatusText = "Scanning..."; 
+
                 int padding = 10;
                 using var stream = await _captureService.CaptureRegionAsync(
                     (int)_currentSelectionRect.X - padding,
@@ -207,23 +212,59 @@ namespace ScreenTranslator.UI.ViewModels
 
                 if (stream == null || stream.Length == 0) return;
 
-                var text = await _ocrService.RecognizeTextAsync(stream, SourceLanguage);
+                // 1. Image Diffing Strategy
+                // Convert to bytes for comparison
+                using var ms = new System.IO.MemoryStream();
+                await stream.CopyToAsync(ms);
+                var currentBytes = ms.ToArray();
+
+                // Simple byte comparison (fast enough for small regions)
+                bool isImageChanged = false;
+                if (_lastCaptureBytes.Length != currentBytes.Length)
+                {
+                    isImageChanged = true;
+                }
+                else
+                {
+                    // Check purely for content equality
+                    if (!System.Linq.Enumerable.SequenceEqual(_lastCaptureBytes, currentBytes))
+                    {
+                        isImageChanged = true;
+                    }
+                }
+
+                if (!isImageChanged) 
+                {
+                    // Image hasn't changed, skip OCR completely
+                    return; 
+                }
+
+                _lastCaptureBytes = currentBytes;
+                
+                // 2. OCR Processing (Only runs if image changed)
+                // Need to reset stream position if we want to use it again, 
+                // but since we read it to bytes, we can use bytes or new stream.
+                // However, OcrService takes a Stream. Let's create a new stream from bytes.
+                using var ocrStream = new System.IO.MemoryStream(currentBytes);
+
+                var text = await _ocrService.RecognizeTextAsync(ocrStream, SourceLanguage);
 
                 if (string.IsNullOrWhiteSpace(text)) return;
                 
-                // Compare with last result to avoid unnecessary API calls
-                if (text == _lastOcrText) return;
-
+                // 3. Text Diffing Strategy
+                // Compare with last OCR result to avoid unnecessary Translation
                 if (text == _lastOcrText) return;
 
                 _lastOcrText = text;
-                SourceText = text; // Update source text for UI
-                // StatusText = "Auto-translating..."; // Optional: feedback
-
+                SourceText = text; 
+                
+                StatusText = "Translating new content...";
                 var translated = await _translationService.TranslateAsync(text, SourceLanguage, TargetLanguage);
+                
                 if (!string.IsNullOrWhiteSpace(translated))
                 {
                     TranslatedText = translated;
+                    UpdateStatusTemporary("Updated", 1000);
                 }
             }
             catch 
@@ -436,8 +477,10 @@ namespace ScreenTranslator.UI.ViewModels
             // Reset Realtime state for new capture
             IsRealtimeActive = false; 
             _realtimeTimer.Stop();
+            _realtimeTimer.Stop();
             _currentSelectionRect = selection;
             _lastOcrText = string.Empty;
+            _lastCaptureBytes = Array.Empty<byte>();
 
             IsProcessing = true;
             StatusText = "Processing Image...";
