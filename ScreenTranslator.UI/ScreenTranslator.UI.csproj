@@ -7,6 +7,15 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- Total Size Optimization -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>partial</TrimMode> 
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport> 
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun> <!-- Disable R2R for smaller size (slower startup) -->
+    
+    <!-- Suppress Trimming Warnings (Risky but requested) -->
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings> 
   </PropertyGroup>
 
   <ItemGroup>

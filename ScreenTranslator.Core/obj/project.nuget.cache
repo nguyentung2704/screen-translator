@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Y1In+HU0rOhZCI4a3DrrB5UPFTMKAbTTxy8hARYnn+VCh3NKgTpP8xSYUbrHjuVCkzLepwmcfbBfZ8a6dU006A==",
+  "dgSpecHash": "yuhDvJ1BtZxYDKriWjMvdWYSF7M6MEeOEwEyGmv/neQlRahtEq1eNaLEDuyEfeAJZEfG/ebP3NWDLNHc/3w8sQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\nguyentung\\Desktop\\apps\\ScreenTranslator.Core\\ScreenTranslator.Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\7.0.20\\microsoft.netcore.app.runtime.win-x64.7.0.20.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\7.0.20\\microsoft.windowsdesktop.app.runtime.win-x64.7.0.20.nupkg.sha512",
+    "C:\\Users\\nguyentung\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\7.0.20\\microsoft.aspnetcore.app.runtime.win-x64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }

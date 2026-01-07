@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ScreenTranslator.Core.Interfaces;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -11,12 +12,17 @@ namespace ScreenTranslator.UI.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        public record LanguageItem(string Name, string Code);
+
         private readonly IHotkeyService _hotkeyService;
         private readonly IScreenCaptureService _captureService;
         private readonly IOcrService _ocrService;
         private readonly ITranslationService _translationService;
         private readonly ScreenTranslator.Infrastructure.Services.TranslationManager _translationManager;
         private readonly ScreenTranslator.Infrastructure.Services.SettingsService _settingsService;
+        
+        public DebugLogViewModel DebugLog { get; } = new DebugLogViewModel();
+        private ScreenTranslator.UI.Views.DebugLogWindow? _debugLogWindow;
 
         [ObservableProperty]
         private string _translatedText = string.Empty;
@@ -34,6 +40,7 @@ namespace ScreenTranslator.UI.ViewModels
         [ObservableProperty] private double _windowFontSize = 14;
         [ObservableProperty] private bool _showSourceText;
         [ObservableProperty] private string _sourceText = string.Empty;
+        [ObservableProperty] private bool _enableOcrPreprocessing = true;
         
         // Settings Panel property removed
 
@@ -66,6 +73,7 @@ namespace ScreenTranslator.UI.ViewModels
         partial void OnWindowOpacityChanged(double value) => SaveSettings();
         partial void OnWindowFontSizeChanged(double value) => SaveSettings();
         partial void OnShowSourceTextChanged(bool value) => SaveSettings();
+        partial void OnEnableOcrPreprocessingChanged(bool value) => SaveSettings();
 
         private DispatcherTimer _realtimeTimer;
         private Rect _currentSelectionRect;
@@ -93,7 +101,26 @@ namespace ScreenTranslator.UI.ViewModels
         [ObservableProperty] private Key _hotkeyKey = Key.D;
         [ObservableProperty] private string _hotkeyDisplay = "Ctrl+Shift+D";
 
+        public ObservableCollection<LanguageItem> SupportedLanguages { get; } = new ObservableCollection<LanguageItem>
+        {
+            new LanguageItem("Auto Detect", "auto"),
+            new LanguageItem("English", "en"),
+            new LanguageItem("Vietnamese", "vi"),
+            new LanguageItem("Japanese", "ja"),
+            new LanguageItem("Korean", "ko"),
+            new LanguageItem("Chinese", "zh-CN"),
+            new LanguageItem("French", "fr"),
+            new LanguageItem("German", "de"),
+            new LanguageItem("Spanish", "es"),
+            new LanguageItem("Russian", "ru"),
+            new LanguageItem("Portuguese" ,"pt"),
+            new LanguageItem("Indonesian", "id"),
+            new LanguageItem("Thai", "th")
+        };
+
         public IRelayCommand<string> SetLanguageCommand { get; }
+        public IRelayCommand<string> SetSourceLanguageCommand { get; }
+        public IRelayCommand<string> SetTargetLanguageCommand { get; }
         public IRelayCommand<string> SetTranslatorCommand { get; }
         public IRelayCommand SetApiKeyCommand { get; }
 
@@ -104,8 +131,9 @@ namespace ScreenTranslator.UI.ViewModels
         public IRelayCommand<string> SetOpacityCommand { get; }
         public IRelayCommand<string> SetFontSizeCommand { get; }
         public IRelayCommand HideResultCommand { get; }
+        public IRelayCommand ShowDebugLogCommand { get; }
 
-        public string AppVersion => "v1.4.2";
+        public string AppVersion => "v1.4.15";
 
         // Helper to show momentary status updates
         private async void UpdateStatusTemporary(string message, int durationMs = 3000)
@@ -151,12 +179,44 @@ namespace ScreenTranslator.UI.ViewModels
             StartSelectionCommand = new RelayCommand(StartSelection);
             ProcessSelectionCommand = new AsyncRelayCommand<Rect>(ProcessSelectionAsync);
             SetLanguageCommand = new RelayCommand<string>(SetLanguages);
+            SetSourceLanguageCommand = new RelayCommand<string>(code => 
+            {
+                if (!string.IsNullOrEmpty(code)) 
+                {
+                    SourceLanguage = code;
+                    UpdateStatusTemporary($"Source: {code}");
+                    SaveSettings();
+                    // trigger re-translate if we have text?
+                    if (!string.IsNullOrEmpty(SourceText))
+                    {
+                         // Optionally re-translate immediately
+                         // _ = ProcessTranslationOnlyAsync(SourceText); 
+                    }
+                }
+            });
+            SetTargetLanguageCommand = new RelayCommand<string>(code => 
+            {
+                if (!string.IsNullOrEmpty(code)) 
+                {
+                    TargetLanguage = code;
+                    UpdateStatusTemporary($"Target: {code}");
+                    SaveSettings();
+                     if (!string.IsNullOrEmpty(SourceText))
+                    {
+                         // Trigger re-translate
+                         // We can extract translation logic to a method to call it here.
+                         // For now just update status.
+                    }
+                }
+            });
             SetTranslatorCommand = new RelayCommand<string>(SetTranslator);
             SetApiKeyCommand = new RelayCommand(OpenApiKeySettings);
             SetHotkeyCommand = new RelayCommand(OpenHotkeySettings);
             ExitCommand = new RelayCommand(ExitApp);
             // ToggleRealtimeCommand = new RelayCommand(ToggleRealtime); // Removed
+            // ToggleRealtimeCommand = new RelayCommand(ToggleRealtime); // Removed
             HideResultCommand = new RelayCommand(HideResult);
+            ShowDebugLogCommand = new RelayCommand(ShowDebugLog);
 
             SetOpacityCommand = new RelayCommand<string>(o => 
             {
@@ -247,7 +307,7 @@ namespace ScreenTranslator.UI.ViewModels
                 // However, OcrService takes a Stream. Let's create a new stream from bytes.
                 using var ocrStream = new System.IO.MemoryStream(currentBytes);
 
-                var text = await _ocrService.RecognizeTextAsync(ocrStream, SourceLanguage);
+                var text = await _ocrService.RecognizeTextAsync(ocrStream, SourceLanguage, EnableOcrPreprocessing);
 
                 if (string.IsNullOrWhiteSpace(text)) return;
                 
@@ -258,12 +318,15 @@ namespace ScreenTranslator.UI.ViewModels
                 _lastOcrText = text;
                 SourceText = text; 
                 
+                DebugLog.AddLog("OCR Text", text);
+
                 StatusText = "Translating new content...";
                 var translated = await _translationService.TranslateAsync(text, SourceLanguage, TargetLanguage);
                 
                 if (!string.IsNullOrWhiteSpace(translated))
                 {
                     TranslatedText = translated;
+                    DebugLog.AddLog("Translate", translated);
                     UpdateStatusTemporary("Updated", 1000);
                 }
             }
@@ -425,9 +488,9 @@ namespace ScreenTranslator.UI.ViewModels
             // Load UI Settings
             WindowOpacity = settings.WindowOpacity;
             WindowFontSize = settings.WindowFontSize;
-            WindowFontSize = settings.WindowFontSize;
             ShowSourceText = settings.ShowSourceText;
             IsRealtimeActive = settings.IsRealtimeActive;
+            EnableOcrPreprocessing = settings.EnableOcrPreprocessing;
         }
 
         private void SaveSettings()
@@ -445,7 +508,8 @@ namespace ScreenTranslator.UI.ViewModels
                 WindowOpacity = WindowOpacity,
                 WindowFontSize = WindowFontSize,
                 ShowSourceText = ShowSourceText,
-                IsRealtimeActive = IsRealtimeActive
+                IsRealtimeActive = IsRealtimeActive,
+                EnableOcrPreprocessing = EnableOcrPreprocessing
             };
             _settingsService.SaveSettings(settings);
         }
@@ -520,7 +584,7 @@ namespace ScreenTranslator.UI.ViewModels
                     return;
                 }
 
-                var recognizedText = await _ocrService.RecognizeTextAsync(stream, SourceLanguage);
+                var recognizedText = await _ocrService.RecognizeTextAsync(stream, SourceLanguage, EnableOcrPreprocessing);
                 
                 if (string.IsNullOrWhiteSpace(recognizedText))
                 {
@@ -556,8 +620,22 @@ namespace ScreenTranslator.UI.ViewModels
             }
         }
 
+        private void ShowDebugLog()
+        {
+            if (_debugLogWindow == null || !_debugLogWindow.IsLoaded)
+            {
+                _debugLogWindow = new ScreenTranslator.UI.Views.DebugLogWindow(DebugLog);
+                _debugLogWindow.Show();
+            }
+            else
+            {
+                _debugLogWindow.Activate();
+            }
+        }
+
         private void ExitApp()
         {
+             _debugLogWindow?.Close();
             _hotkeyService.UnregisterAll();
             Application.Current.Shutdown();
         }

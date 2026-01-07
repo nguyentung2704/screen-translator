@@ -18,6 +18,16 @@ namespace ScreenTranslator.UI.Views
             }
         }
 
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ContextMenu != null)
+            {
+                this.ContextMenu.PlacementTarget = sender as UIElement;
+                this.ContextMenu.DataContext = this.DataContext; // FIX: Explicitly bind DataContext to Window's ViewModel
+                this.ContextMenu.IsOpen = true;
+            }
+        }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
              // Deprecated, kept for interface compatibility if needed but not hooked up in XAML anymore

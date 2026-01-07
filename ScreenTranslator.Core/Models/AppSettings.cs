@@ -16,5 +16,6 @@ namespace ScreenTranslator.Core.Models
         public double WindowFontSize { get; set; } = 14;
         public bool ShowSourceText { get; set; } = false;
         public bool IsRealtimeActive { get; set; } = false;
+        public bool EnableOcrPreprocessing { get; set; } = true;
     }
 }

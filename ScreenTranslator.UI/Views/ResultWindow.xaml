@@ -18,14 +18,30 @@
     <!-- Context Menu for Settings -->
     <Window.ContextMenu>
         <ContextMenu>
-            <!-- Realtime Toggle -->
+            <!-- Language Pairs Submenu (Primary Action) -->
+            <MenuItem Header="Languages">
+                <MenuItem Header="Japanese -> Vietnamese" Command="{Binding SetLanguageCommand}" CommandParameter="ja-vi" IsCheckable="True" IsChecked="{Binding IsJaViSelected, Mode=OneWay}" StaysOpenOnClick="True"/>
+                <MenuItem Header="English -> Vietnamese" Command="{Binding SetLanguageCommand}" CommandParameter="en-vi" IsCheckable="True" IsChecked="{Binding IsEnViSelected, Mode=OneWay}" StaysOpenOnClick="True"/>
+            </MenuItem>
+            
+            <Separator/>
+
+            <!-- Realtime Toggle (Mode) -->
             <MenuItem Header="Realtime Translation" IsCheckable="True" IsChecked="{Binding IsRealtimeActive, Mode=TwoWay}" StaysOpenOnClick="True"/>
+            <MenuItem Header="Open Debug Log" Command="{Binding ShowDebugLogCommand}"/>
+            
             <Separator/>
             
-            <!-- Source Text Toggle -->
+            <!-- Visual Settings -->
             <MenuItem Header="Show Source Text" IsCheckable="True" IsChecked="{Binding ShowSourceText, Mode=TwoWay}" StaysOpenOnClick="True"/>
             
-            <!-- Opacity Submenu -->
+            <MenuItem Header="Font Size">
+                <MenuItem Header="Small (12)" Command="{Binding SetFontSizeCommand}" CommandParameter="12" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=12, Mode=OneWay}" StaysOpenOnClick="True"/>
+                <MenuItem Header="Medium (14)" Command="{Binding SetFontSizeCommand}" CommandParameter="14" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=14, Mode=OneWay}" StaysOpenOnClick="True"/>
+                <MenuItem Header="Large (18)" Command="{Binding SetFontSizeCommand}" CommandParameter="18" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=18, Mode=OneWay}" StaysOpenOnClick="True"/>
+                <MenuItem Header="Extra Large (24)" Command="{Binding SetFontSizeCommand}" CommandParameter="24" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=24, Mode=OneWay}" StaysOpenOnClick="True"/>
+            </MenuItem>
+
             <MenuItem Header="Window Opacity">
                 <MenuItem Header="100%" Command="{Binding SetOpacityCommand}" CommandParameter="1.0" IsCheckable="True" IsChecked="{Binding WindowOpacity, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=1.0, Mode=OneWay}" StaysOpenOnClick="True"/>
                 <MenuItem Header="90%" Command="{Binding SetOpacityCommand}" CommandParameter="0.9" IsCheckable="True" IsChecked="{Binding WindowOpacity, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=0.9, Mode=OneWay}" StaysOpenOnClick="True"/>
@@ -33,14 +49,6 @@
                 <MenuItem Header="50%" Command="{Binding SetOpacityCommand}" CommandParameter="0.5" IsCheckable="True" IsChecked="{Binding WindowOpacity, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=0.5, Mode=OneWay}" StaysOpenOnClick="True"/>
             </MenuItem>
 
-            <!-- Font Size Submenu -->
-            <MenuItem Header="Font Size">
-                <MenuItem Header="Small (12)" Command="{Binding SetFontSizeCommand}" CommandParameter="12" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=12, Mode=OneWay}" StaysOpenOnClick="True"/>
-                <MenuItem Header="Medium (14)" Command="{Binding SetFontSizeCommand}" CommandParameter="14" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=14, Mode=OneWay}" StaysOpenOnClick="True"/>
-                <MenuItem Header="Large (18)" Command="{Binding SetFontSizeCommand}" CommandParameter="18" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=18, Mode=OneWay}" StaysOpenOnClick="True"/>
-                <MenuItem Header="Extra Large (24)" Command="{Binding SetFontSizeCommand}" CommandParameter="24" IsCheckable="True" IsChecked="{Binding WindowFontSize, Converter={StaticResource ValueEqualityConverter}, ConverterParameter=24, Mode=OneWay}" StaysOpenOnClick="True"/>
-            </MenuItem>
-            
             <Separator/>
             <MenuItem Header="Close" Command="{Binding HideResultCommand}" InputGestureText="Esc"/>
         </ContextMenu>
@@ -67,7 +75,6 @@
                 <Border Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Header_MouseLeftButtonDown">
                     <Grid>
                         <TextBlock Text="🌐 Translation" Foreground="White" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" IsHitTestVisible="False"/>
-                        <TextBlock Text="(Right-click for Settings)" Foreground="#55FFFFFF" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="0,0,10,0"/>
                     </Grid>
                 </Border>
 
@@ -89,6 +96,10 @@
                             </Style>
                         </Border.Style>
                     </Border>
+
+                    <Button Content="⚙" Click="SettingsButton_Click" ToolTip="Settings"
+                            Foreground="White" Background="Transparent" BorderThickness="0"
+                            Padding="8,0" FontSize="16" Cursor="Hand" FontWeight="Bold" Margin="0,0,0,0"/>
 
                     <Button Content="✕" Command="{Binding HideResultCommand}" ToolTip="Close"
                             Foreground="White" Background="Transparent" BorderThickness="0"

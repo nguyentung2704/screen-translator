@@ -10,11 +10,11 @@ none
 false
 TRACE;RELEASE;NET;NET7_0;NETCOREAPP
 C:\Users\nguyentung\Desktop\apps\ScreenTranslator.UI\App.xaml
-5-1710751330
+6-801523612
 
-9-581095290
+121901117601
 2151549953472
-MainWindow.xaml;Views\ResultWindow.xaml;Views\SelectionWindow.xaml;Views\SettingsWindow.xaml;Views\StatusWindow.xaml;
+MainWindow.xaml;Views\DebugLogWindow.xaml;Views\ResultWindow.xaml;Views\SelectionWindow.xaml;Views\SettingsWindow.xaml;Views\StatusWindow.xaml;
 
 False
 

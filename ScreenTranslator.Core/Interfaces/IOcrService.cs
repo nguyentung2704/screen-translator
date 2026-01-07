@@ -5,6 +5,6 @@ namespace ScreenTranslator.Core.Interfaces
 {
     public interface IOcrService
     {
-        Task<string> RecognizeTextAsync(Stream imageStream, string languageCode = "ja");
+        Task<string> RecognizeTextAsync(Stream imageStream, string languageCode = "ja", bool enablePreprocessing = false);
     }
 }
