@@ -105,7 +105,7 @@ namespace ScreenTranslator.UI.ViewModels
         public IRelayCommand<string> SetFontSizeCommand { get; }
         public IRelayCommand HideResultCommand { get; }
 
-        public string AppVersion => "v1.2.2";
+        public string AppVersion => "v1.4.2";
 
         // Helper to show momentary status updates
         private async void UpdateStatusTemporary(string message, int durationMs = 3000)

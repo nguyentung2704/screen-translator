@@ -1,12 +1,13 @@
-# 🔍 Screen Translator AI (v1.2.2)
+# 🔍 Screen Translator AI (v1.4.2)
 
 **Screen Translator AI** là một ứng dụng Windows mạnh mẽ, tinh gọn, cho phép bạn chụp bất kỳ vùng nào trên màn hình và dịch thuật ngay lập tức. Ứng dụng kết hợp công nghệ **Windows Native OCR** siêu tốc và trí tuệ nhân tạo **Google Gemini AI** để mang lại kết quả dịch thuật tự nhiên, chính xác nhất.
 
 ## ✨ Tính năng nổi bật
 
 -   **📸 Chụp & Dịch**: Chỉ cần kéo chuột chọn vùng, văn bản sẽ được dịch ngay lập tức.
--   **⚡ Smart Realtime (v1.2.0)**: Chế độ dịch tự động cực nhanh (0.5s) nhưng tiết kiệm CPU nhờ thuật toán so sánh hình ảnh thông minh.
--   **🤖 AI Translation**: Dịch thuật ngữ cảnh cực hay nhờ Gemini 2.0 Flash.
+-   **🤖 Linguistic Analyst**: Gemini AI phân tích ngữ cảnh, sắc thái, và sửa lỗi OCR để dịch chính xác như người bản xứ.
+-   **🔍 Enhanced OCR**: Tự động phóng to và làm rõ ảnh gấp 2 lần.
+-   **⚡ Smart Realtime**: Chế độ dịch tự động 0.5s.
 -   **🎨 Giao diện hiện đại**: Dark Mode, Glassmorphism, tuỳ chỉnh độ mờ, cỡ chữ.
 -   **💾 Tự động lưu**: Ghi nhớ mọi cài đặt của bạn.
 
@@ -15,7 +16,7 @@
 ## 🛠 Hướng dẫn thiết lập (Setup)
 
 ### 1. Tải và Chạy
-- Giải nén tệp `ScreenTranslator_v1.0.3_Portable.zip`.
+- Giải nén tệp `ScreenTranslator_v1.4.2_Portable.zip`.
 - Chạy trực tiếp file `ScreenTranslator.UI.exe`.
 
 ### 2. Cấu hình API Key (Bắt buộc cho chế độ AI)

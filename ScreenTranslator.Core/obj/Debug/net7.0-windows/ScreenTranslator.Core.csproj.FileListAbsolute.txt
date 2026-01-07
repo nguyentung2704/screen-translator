@@ -1,0 +1,11 @@
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\bin\Debug\net7.0-windows\ScreenTranslator.Core.deps.json
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\bin\Debug\net7.0-windows\ScreenTranslator.Core.dll
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\bin\Debug\net7.0-windows\ScreenTranslator.Core.pdb
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ScreenTranslator.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ScreenTranslator.Core.AssemblyInfoInputs.cache
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ScreenTranslator.Core.AssemblyInfo.cs
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ScreenTranslator.Core.csproj.CoreCompileInputs.cache
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ScreenTranslator.Core.dll
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\refint\ScreenTranslator.Core.dll
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ScreenTranslator.Core.pdb
+C:\Users\nguyentung\Desktop\apps\ScreenTranslator.Core\obj\Debug\net7.0-windows\ref\ScreenTranslator.Core.dll

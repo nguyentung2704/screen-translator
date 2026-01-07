@@ -1,0 +1,4 @@
+C:\Users\nguyentung\Desktop\apps\publish_release_v140_smart_trans\ScreenTranslator.UI.pdb
+C:\Users\nguyentung\Desktop\apps\publish_release_v140_smart_trans\ScreenTranslator.Core.pdb
+C:\Users\nguyentung\Desktop\apps\publish_release_v140_smart_trans\ScreenTranslator.Infrastructure.pdb
+C:\Users\nguyentung\Desktop\apps\publish_release_v140_smart_trans\ScreenTranslator.UI.exe

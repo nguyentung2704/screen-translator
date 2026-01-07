@@ -1,0 +1,4 @@
+C:\Users\nguyentung\Desktop\apps\publish_release_v130_reverted\ScreenTranslator.UI.pdb
+C:\Users\nguyentung\Desktop\apps\publish_release_v130_reverted\ScreenTranslator.Core.pdb
+C:\Users\nguyentung\Desktop\apps\publish_release_v130_reverted\ScreenTranslator.Infrastructure.pdb
+C:\Users\nguyentung\Desktop\apps\publish_release_v130_reverted\ScreenTranslator.UI.exe

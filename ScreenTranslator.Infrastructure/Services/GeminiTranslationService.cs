@@ -32,7 +32,23 @@ namespace ScreenTranslator.Infrastructure.Services
 
             var url = $"https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key={_apiKey}";
 
-            var prompt = $"Translate the following text from {fromLanguage} to {toLanguage}. Output only the translated text, no explanations.\n\nText: {text}";
+
+
+            // IMPROVEMENT v1.4.2: Detailed Prompt (Linguistic Analysis)
+            var prompt = $@"
+Role: You are a highly skilled professional translator and linguistic expert.
+
+Task:
+1. Analyze the Context: Determine if the text below is a conversation, narrative, UI element, or document.
+2. OCR Correction: Intelligently fix any typos, broken words, or scanning errors caused by OCR.
+3. Translation: Translate the text from {fromLanguage} to {toLanguage}.
+    - Style: Native speaker level. Fluent, natural, and culturally appropriate.
+    - Tone: Maintain the original tone (e.g., casual for chat, formal for docs).
+    - Slang/Idioms: Adapt them to equivalent {toLanguage} expressions if present.
+4. Output: Return ONLY the translated text. Do not provide explanations or notes.
+
+Text to translate:
+{text}";
 
             var requestBody = new
             {
